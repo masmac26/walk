@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>📖 Journal</h1>
+
+  <form id="journalForm">
+    <!-- Feeling today -->
+    <label for="feeling">Hi! How are you feeling today? (1–10)</label><br>
+    <input type="number" id="feeling" name="feeling" min="1" max="10" required><br><br>
+
+    <!-- Weather -->
+    <label for="weather">What does the weather feel like?</label><br>
+    <input type="number" id="temp" name="temp" placeholder="Temp"> °F<br><br>
+
+    <div id="weatherOptions">
+      <label><input type="radio" name="weather" value="☀️"> ☀️</label>
+      <label><input type="radio" name="weather" value="🌤️"> 🌤️</label>
+      <label><input type="radio" name="weather" value="☁️"> ☁️</label>
+      <label><input type="radio" name="weather" value="🌧️"> 🌧️</label>
+      <label><input type="radio" name="weather" value="⛈️"> ⛈️</label>
+    </div><br>
+
+    <!-- Thoughts -->
+    <label for="thoughts">What else is on your mind?</label><br>
+    <textarea id="thoughts" name="thoughts" rows="4" cols="30"></textarea><br><br>
+
+    <button type="submit">Save Entry</button>
+  </form>
+
+  <!-- Bottom nav -->
+  <div class="navbar">
+    <a href="index.html">🏠 Home</a>
+    <a href="journal.html" class="active">📖 Journal</a>
+  </div>
+
+  <script>
+    // simple save to browser for now
+    document.getElementById("journalForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("✅ Your journal entry has been saved (locally)!");
+    });
+  </script>
+</body>
+</html>
