@@ -25,3 +25,25 @@ button:hover {
   margin: 20px 0;
   font-weight: bold;
 }
+/* Bottom navbar */
+.navbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #333;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.navbar a.active {
+  font-weight: bold;
+  border-bottom: 2px solid #fff;
+}
