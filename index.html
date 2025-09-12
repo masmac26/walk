@@ -6,6 +6,8 @@
   <title>Walk</title>
   <link rel="stylesheet" href="style.css">
 </head>
+  <h2 id="timer">00:00:00</h2>
+
 <body>
   <h1>Go Outside!</h1>
   <button id="startBtn">Start Walk</button>
@@ -36,6 +38,59 @@
   document.getElementById("endWalk").onclick = function() {
     alert("Walk ended!");
   };
+</script>
+<script>
+  let timerInterval;
+  let totalSeconds = 0;
+  let isPaused = false;
+
+  function updateTimer() {
+    let hours = Math.floor(totalSeconds / 3600);
+    let minutes = Math.floor((totalSeconds % 3600) / 60);
+    let seconds = totalSeconds % 60;
+
+    document.getElementById("timer").textContent =
+      String(hours).padStart(2, "0") + ":" +
+      String(minutes).padStart(2, "0") + ":" +
+      String(seconds).padStart(2, "0");
+  }
+
+  document.getElementById("startWalk").onclick = function() {
+    if (!timerInterval) {
+      timerInterval = setInterval(function() {
+        if (!isPaused) {
+          totalSeconds++;
+          updateTimer();
+        }
+      }, 1000);
+    }
+  };
+
+  document.getElementById("pauseWalk").onclick = function() {
+    isPaused = !isPaused;
+    if (isPaused) {
+      this.textContent = "▶️ Resume Walk";
+    } else {
+      this.textContent = "⏸️ Pause Walk";
+    }
+  };
+
+  document.getElementById("endWalk").onclick = function() {
+    clearInterval(timerInterval);
+    timerInterval = null;
+
+    let finalTime = document.getElementById("timer").textContent;
+    alert("🎉 Congratulations! Your walk today was " + finalTime + " long!");
+
+    // reset
+    totalSeconds = 0;
+    isPaused = false;
+    updateTimer();
+    document.getElementById("pauseWalk").textContent = "⏸️ Pause Walk";
+  };
+
+  // initialize
+  updateTimer();
 </script>
 
 </body>
