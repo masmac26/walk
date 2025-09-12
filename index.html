@@ -40,7 +40,7 @@
   };
 </script>
 <script>
-  let timerInterval;
+  let timerInterval = null;
   let totalSeconds = 0;
   let isPaused = false;
 
@@ -55,8 +55,10 @@
       String(seconds).padStart(2, "0");
   }
 
+  // Start button
   document.getElementById("startWalk").onclick = function() {
-    if (!timerInterval) {
+    if (timerInterval === null) { // prevent multiple intervals
+      isPaused = false;
       timerInterval = setInterval(function() {
         if (!isPaused) {
           totalSeconds++;
@@ -66,32 +68,35 @@
     }
   };
 
+  // Pause button
   document.getElementById("pauseWalk").onclick = function() {
-    isPaused = !isPaused;
-    if (isPaused) {
-      this.textContent = "▶️ Resume Walk";
-    } else {
-      this.textContent = "⏸️ Pause Walk";
+    if (timerInterval !== null) {
+      isPaused = !isPaused;
+      this.textContent = isPaused ? "▶️ Resume Walk" : "⏸️ Pause Walk";
     }
   };
 
+  // End button
   document.getElementById("endWalk").onclick = function() {
-    clearInterval(timerInterval);
-    timerInterval = null;
+    if (timerInterval !== null) {
+      clearInterval(timerInterval);
+      timerInterval = null;
 
-    let finalTime = document.getElementById("timer").textContent;
-    alert("🎉 Congratulations! Your walk today was " + finalTime + " long!");
+      let finalTime = document.getElementById("timer").textContent;
+      alert("🎉 Congratulations! Your walk today was " + finalTime + " long!");
 
-    // reset
-    totalSeconds = 0;
-    isPaused = false;
-    updateTimer();
-    document.getElementById("pauseWalk").textContent = "⏸️ Pause Walk";
+      // reset
+      totalSeconds = 0;
+      isPaused = false;
+      updateTimer();
+      document.getElementById("pauseWalk").textContent = "⏸️ Pause Walk";
+    }
   };
 
-  // initialize
+  // initialize display
   updateTimer();
 </script>
+
 
 </body>
 </html>
