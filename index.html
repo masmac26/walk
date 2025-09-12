@@ -11,6 +11,15 @@
   <button id="startBtn">Start Walk</button>
   <p id="timer">00:00</p>
   <p id="challenge"></p>
+<!-- Pause Walk Button -->
+<button id="pauseWalk" style="background-color: yellow; color: black; padding: 10px 20px; margin: 5px; border: none; border-radius: 8px; font-size: 16px;">
+  ⏸️ Pause Walk
+</button>
+
+<!-- End Walk Button -->
+<button id="endWalk" style="background-color: red; color: white; padding: 10px 20px; margin: 5px; border: none; border-radius: 8px; font-size: 16px;">
+  🛑 End Walk
+</button>
 
   <script src="script.js"></script>
     <!-- Bottom nav -->
@@ -19,6 +28,15 @@
     <a href="journal.html">📖 Journal</a>
   </div>
 </body>
+<script>
+  document.getElementById("pauseWalk").onclick = function() {
+    alert("Walk paused!");
+  };
+
+  document.getElementById("endWalk").onclick = function() {
+    alert("Walk ended!");
+  };
+</script>
 
 </body>
 </html>
