@@ -6,97 +6,90 @@
   <title>Walk</title>
   <link rel="stylesheet" href="style.css">
 </head>
-  <h2 id="timer">00:00:00</h2>
-
 <body>
   <h1>Go Outside!</h1>
-  <button id="startBtn">Start Walk</button>
-  <p id="timer">00:00</p>
+  
+  <!-- Timer Display -->
+  <h2 id="timer">00:00:00</h2>
+  
+  <!-- Buttons -->
+  <button id="startWalk" style="background-color: green; color: white; padding: 10px 20px; margin: 5px; border: none; border-radius: 8px; font-size: 16px;">
+    ▶️ Start Walk
+  </button>
+
+  <button id="pauseWalk" style="background-color: yellow; color: black; padding: 10px 20px; margin: 5px; border: none; border-radius: 8px; font-size: 16px;">
+    ⏸️ Pause Walk
+  </button>
+
+  <button id="endWalk" style="background-color: red; color: white; padding: 10px 20px; margin: 5px; border: none; border-radius: 8px; font-size: 16px;">
+    🛑 End Walk
+  </button>
+
   <p id="challenge"></p>
-<!-- Pause Walk Button -->
-<button id="pauseWalk" style="background-color: yellow; color: black; padding: 10px 20px; margin: 5px; border: none; border-radius: 8px; font-size: 16px;">
-  ⏸️ Pause Walk
-</button>
 
-<!-- End Walk Button -->
-<button id="endWalk" style="background-color: red; color: white; padding: 10px 20px; margin: 5px; border: none; border-radius: 8px; font-size: 16px;">
-  🛑 End Walk
-</button>
-
-  <script src="script.js"></script>
-    <!-- Bottom nav -->
+  <!-- Bottom nav -->
   <div class="navbar">
     <a href="index.html" class="active">🏠 Home</a>
     <a href="journal.html">📖 Journal</a>
   </div>
-</body>
-<script>
-  document.getElementById("pauseWalk").onclick = function() {
-    alert("Walk paused!");
-  };
 
-  document.getElementById("endWalk").onclick = function() {
-    alert("Walk ended!");
-  };
-</script>
-<script>
-  let timerInterval = null;
-  let totalSeconds = 0;
-  let isPaused = false;
+  <!-- Timer Script -->
+  <script>
+    let timerInterval = null;
+    let totalSeconds = 0;
+    let isPaused = false;
 
-  function updateTimer() {
-    let hours = Math.floor(totalSeconds / 3600);
-    let minutes = Math.floor((totalSeconds % 3600) / 60);
-    let seconds = totalSeconds % 60;
+    function updateTimer() {
+      let hours = Math.floor(totalSeconds / 3600);
+      let minutes = Math.floor((totalSeconds % 3600) / 60);
+      let seconds = totalSeconds % 60;
 
-    document.getElementById("timer").textContent =
-      String(hours).padStart(2, "0") + ":" +
-      String(minutes).padStart(2, "0") + ":" +
-      String(seconds).padStart(2, "0");
-  }
-
-  // Start button
-  document.getElementById("startWalk").onclick = function() {
-    if (timerInterval === null) { // prevent multiple intervals
-      isPaused = false;
-      timerInterval = setInterval(function() {
-        if (!isPaused) {
-          totalSeconds++;
-          updateTimer();
-        }
-      }, 1000);
+      document.getElementById("timer").textContent =
+        String(hours).padStart(2, "0") + ":" +
+        String(minutes).padStart(2, "0") + ":" +
+        String(seconds).padStart(2, "0");
     }
-  };
 
-  // Pause button
-  document.getElementById("pauseWalk").onclick = function() {
-    if (timerInterval !== null) {
-      isPaused = !isPaused;
-      this.textContent = isPaused ? "▶️ Resume Walk" : "⏸️ Pause Walk";
-    }
-  };
+    // Start button
+    document.getElementById("startWalk").onclick = function() {
+      if (timerInterval === null) { // prevent multiple intervals
+        isPaused = false;
+        timerInterval = setInterval(function() {
+          if (!isPaused) {
+            totalSeconds++;
+            updateTimer();
+          }
+        }, 1000);
+      }
+    };
 
-  // End button
-  document.getElementById("endWalk").onclick = function() {
-    if (timerInterval !== null) {
-      clearInterval(timerInterval);
-      timerInterval = null;
+    // Pause button
+    document.getElementById("pauseWalk").onclick = function() {
+      if (timerInterval !== null) {
+        isPaused = !isPaused;
+        this.textContent = isPaused ? "▶️ Resume Walk" : "⏸️ Pause Walk";
+      }
+    };
 
-      let finalTime = document.getElementById("timer").textContent;
-      alert("🎉 Congratulations! Your walk today was " + finalTime + " long!");
+    // End button
+    document.getElementById("endWalk").onclick = function() {
+      if (timerInterval !== null) {
+        clearInterval(timerInterval);
+        timerInterval = null;
 
-      // reset
-      totalSeconds = 0;
-      isPaused = false;
-      updateTimer();
-      document.getElementById("pauseWalk").textContent = "⏸️ Pause Walk";
-    }
-  };
+        let finalTime = document.getElementById("timer").textContent;
+        alert("🎉 Congratulations! Your walk today was " + finalTime + " long!");
 
-  // initialize display
-  updateTimer();
-</script>
+        // reset
+        totalSeconds = 0;
+        isPaused = false;
+        updateTimer();
+        document.getElementById("pauseWalk").textContent = "⏸️ Pause Walk";
+      }
+    };
 
-
+    // initialize display
+    updateTimer();
+  </script>
 </body>
 </html>
