@@ -103,5 +103,31 @@
       });
     }
   </script>
+  <script>
+  // Apply saved theme on page load
+  window.onload = function() {
+    let theme = localStorage.getItem("theme") || "default";
+    applyTheme(theme);
+  };
+
+  function applyTheme(theme) {
+    let body = document.body;
+
+    if (theme === "default") {
+      body.style.backgroundColor = "#425af5";
+      body.style.color = "#ffffff";
+    } else if (theme === "dark") {
+      body.style.backgroundColor = "#000000";
+      body.style.color = "#ffffff";
+    } else if (theme === "garnetGold") {
+      body.style.backgroundColor = "#782F40";
+      body.style.color = "#CEB888";
+    } else if (theme === "purple") {
+      body.style.backgroundColor = "#440b5c";
+      body.style.color = "#000000";
+    }
+  }
+</script>
+
 </body>
 </html>
