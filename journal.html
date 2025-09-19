@@ -25,6 +25,9 @@
       <label><input type="radio" name="weather" value="🌧️"> 🌧️</label>
       <label><input type="radio" name="weather" value="⛈️"> ⛈️</label>
     </div><br>
+    <!-- Location -->
+    <label for="location">Where did you walk today?</label><br>
+    <input type="text" id="location" name="location" placeholder="e.g. neighborhood, park, campus"><br><br>
 
     <!-- Thoughts -->
     <label for="thoughts">What else is on your mind?</label><br>
@@ -60,6 +63,7 @@
       let feeling = document.getElementById("feeling").value;
       let temp = document.getElementById("temp").value;
       let weather = document.querySelector("input[name='weather']:checked")?.value || "";
+      let location = document.getElementbyID("location").value;
       let thoughts = document.getElementById("thoughts").value;
 
       let entry = {
@@ -67,6 +71,7 @@
         feeling,
         temp,
         weather,
+        location,
         thoughts
       };
 
@@ -97,6 +102,7 @@
           <strong>${entry.date}</strong><br>
           Feeling: ${entry.feeling}/10<br>
           Weather: ${entry.temp}°F ${entry.weather}<br>
+          Walked at: ${entry.location}<br>
           Thoughts: ${entry.thoughts}
         `;
         entriesDiv.appendChild(card);
