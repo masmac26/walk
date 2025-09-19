@@ -104,19 +104,65 @@
   };
 
   document.getElementById("endWalk").onclick = function() {
-    if (timerInterval !== null) {
-      clearInterval(timerInterval);
-      timerInterval = null;
+  if (timerInterval !== null) {
+    clearInterval(timerInterval);
+    timerInterval = null;
 
-      let finalTime = document.getElementById("timer").textContent;
-      alert("🎉 Congratulations! Your walk today was " + finalTime + " long!");
+    let finalTime = document.getElementById("timer").textContent;
 
-      totalSeconds = 0;
-      isPaused = false;
-      updateTimer();
-      document.getElementById("pauseWalk").textContent = "⏸️ Pause Walk";
+    // ---- Get latest journal entry ----
+    let entries = JSON.parse(localStorage.getItem("journalEntries")) || [];
+    let lastFeeling = entries.length > 0 ? parseInt(entries[0].feeling) : null;
+
+    // ---- Motivational messages by mood ----
+    const messages = {
+      low: [
+        "Proud of you for showing up even on tough days 💪",
+        "Small steps are still progress. Keep going 🌱",
+        "Resilience is built one walk at a time 🔑"
+      ],
+      mid: [
+        "Every step counts, keep building resilience 🚶",
+        "Consistency beats intensity. You’ve got this 🔥",
+        "Another walk done — you’re making it a habit 🕒"
+      ],
+      high: [
+        "Nice! You’re building great momentum 🔥",
+        "Solid effort today, your streak is growing 📈",
+        "Great job pushing through — keep the energy up ⚡"
+      ],
+      peak: [
+        "Amazing energy today, keep shining ✨",
+        "You crushed it! Walks like this fuel resilience 🚀",
+        "That’s champion-level consistency 👑"
+      ]
+    };
+
+    // ---- Pick a message ----
+    let moodMessage = "Great job walking today!";
+    if (lastFeeling !== null) {
+      if (lastFeeling <= 3) {
+        moodMessage = messages.low[Math.floor(Math.random() * messages.low.length)];
+      } else if (lastFeeling <= 6) {
+        moodMessage = messages.mid[Math.floor(Math.random() * messages.mid.length)];
+      } else if (lastFeeling <= 8) {
+        moodMessage = messages.high[Math.floor(Math.random() * messages.high.length)];
+      } else {
+        moodMessage = messages.peak[Math.floor(Math.random() * messages.peak.length)];
+      }
     }
-  };
+
+    // ---- Show popup ----
+    alert("🎉 Congratulations! Your walk today was " + finalTime + " long!\n\n" + moodMessage);
+
+    // ---- Reset timer ----
+    totalSeconds = 0;
+    isPaused = false;
+    updateTimer();
+    document.getElementById("pauseWalk").textContent = "⏸️ Pause Walk";
+  }
+};
+
 
   // initialize
   updateTimer();
