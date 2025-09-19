@@ -35,61 +35,92 @@
 
   <!-- Timer Script -->
   <script>
-    let timerInterval = null;
-    let totalSeconds = 0;
-    let isPaused = false;
+  let timerInterval = null;
+  let totalSeconds = 0;
+  let isPaused = false;
 
-    function updateTimer() {
-      let hours = Math.floor(totalSeconds / 3600);
-      let minutes = Math.floor((totalSeconds % 3600) / 60);
-      let seconds = totalSeconds % 60;
+  function updateTimer() {
+    let hours = Math.floor(totalSeconds / 3600);
+    let minutes = Math.floor((totalSeconds % 3600) / 60);
+    let seconds = totalSeconds % 60;
 
-      document.getElementById("timer").textContent =
-        String(hours).padStart(2, "0") + ":" +
-        String(minutes).padStart(2, "0") + ":" +
-        String(seconds).padStart(2, "0");
+    document.getElementById("timer").textContent =
+      String(hours).padStart(2, "0") + ":" +
+      String(minutes).padStart(2, "0") + ":" +
+      String(seconds).padStart(2, "0");
+  }
+
+  // ---- STREAK TRACKER ----
+  function updateStreak() {
+    const streakDiv = document.getElementById("streak");
+
+    let data = JSON.parse(localStorage.getItem("walkStreak")) || {
+      count: 0,
+      lastDate: null
+    };
+
+    let today = new Date().toDateString();
+
+    if (data.lastDate !== today) {
+      if (data.lastDate) {
+        let last = new Date(data.lastDate);
+        let diff = (new Date(today) - last) / (1000 * 60 * 60 * 24);
+
+        if (diff === 1) {
+          data.count += 1; // consecutive day
+        } else {
+          data.count = 1; // missed a day
+        }
+      } else {
+        data.count = 1; // first ever walk
+      }
+      data.lastDate = today;
+      localStorage.setItem("walkStreak", JSON.stringify(data));
     }
 
-    // Start button
-    document.getElementById("startWalk").onclick = function() {
-      if (timerInterval === null) { // prevent multiple intervals
-        isPaused = false;
-        timerInterval = setInterval(function() {
-          if (!isPaused) {
-            totalSeconds++;
-            updateTimer();
-          }
-        }, 1000);
-      }
-    };
+    streakDiv.textContent = "🔥 Streak: " + data.count + " day" + (data.count > 1 ? "s" : "");
+  }
 
-    // Pause button
-    document.getElementById("pauseWalk").onclick = function() {
-      if (timerInterval !== null) {
-        isPaused = !isPaused;
-        this.textContent = isPaused ? "▶️ Resume Walk" : "⏸️ Pause Walk";
-      }
-    };
+  // ---- BUTTONS ----
+  document.getElementById("startWalk").onclick = function() {
+    if (timerInterval === null) { 
+      isPaused = false;
+      timerInterval = setInterval(function() {
+        if (!isPaused) {
+          totalSeconds++;
+          updateTimer();
+        }
+      }, 1000);
+      updateStreak(); // update streak when walk starts
+    }
+  };
 
-    // End button
-    document.getElementById("endWalk").onclick = function() {
-      if (timerInterval !== null) {
-        clearInterval(timerInterval);
-        timerInterval = null;
+  document.getElementById("pauseWalk").onclick = function() {
+    if (timerInterval !== null) {
+      isPaused = !isPaused;
+      this.textContent = isPaused ? "▶️ Resume Walk" : "⏸️ Pause Walk";
+    }
+  };
 
-        let finalTime = document.getElementById("timer").textContent;
-        alert("🎉 Congratulations! Your walk today was " + finalTime + " long!");
+  document.getElementById("endWalk").onclick = function() {
+    if (timerInterval !== null) {
+      clearInterval(timerInterval);
+      timerInterval = null;
 
-        // reset
-        totalSeconds = 0;
-        isPaused = false;
-        updateTimer();
-        document.getElementById("pauseWalk").textContent = "⏸️ Pause Walk";
-      }
-    };
+      let finalTime = document.getElementById("timer").textContent;
+      alert("🎉 Congratulations! Your walk today was " + finalTime + " long!");
 
-    // initialize display
-    updateTimer();
-  </script>
+      totalSeconds = 0;
+      isPaused = false;
+      updateTimer();
+      document.getElementById("pauseWalk").textContent = "⏸️ Pause Walk";
+    }
+  };
+
+  // initialize
+  updateTimer();
+  updateStreak();
+</script>
+
 </body>
 </html>
