@@ -33,6 +33,9 @@
     <button type="submit">Save Entry</button>
   </form>
 
+  <h2>🗂️ Previous Entries</h2>
+  <div id="entries"></div>
+
   <!-- Bottom nav -->
   <div class="navbar">
     <a href="index.html">🏠 Home</a>
@@ -40,11 +43,64 @@
   </div>
 
   <script>
-    // simple save to browser for now
-    document.getElementById("journalForm").addEventListener("submit", function(e) {
+    const form = document.getElementById("journalForm");
+    const entriesDiv = document.getElementById("entries");
+
+    // Load saved entries on page load
+    window.onload = function() {
+      let entries = JSON.parse(localStorage.getItem("journalEntries")) || [];
+      displayEntries(entries);
+    };
+
+    // Handle form submission
+    form.addEventListener("submit", function(e) {
       e.preventDefault();
-      alert("✅ Your journal entry has been saved (locally)!");
+
+      let feeling = document.getElementById("feeling").value;
+      let temp = document.getElementById("temp").value;
+      let weather = document.querySelector("input[name='weather']:checked")?.value || "";
+      let thoughts = document.getElementById("thoughts").value;
+
+      let entry = {
+        date: new Date().toLocaleString(),
+        feeling,
+        temp,
+        weather,
+        thoughts
+      };
+
+      // Save to localStorage
+      let entries = JSON.parse(localStorage.getItem("journalEntries")) || [];
+      entries.unshift(entry); // newest first
+      localStorage.setItem("journalEntries", JSON.stringify(entries));
+
+      // Reset form
+      form.reset();
+
+      // Update display
+      displayEntries(entries);
     });
+
+    // Display entries
+    function displayEntries(entries) {
+      entriesDiv.innerHTML = "";
+      entries.forEach(entry => {
+        let card = document.createElement("div");
+        card.style.border = "1px solid #ccc";
+        card.style.borderRadius = "8px";
+        card.style.padding = "10px";
+        card.style.margin = "10px 0";
+        card.style.background = "#f9f9f9";
+
+        card.innerHTML = `
+          <strong>${entry.date}</strong><br>
+          Feeling: ${entry.feeling}/10<br>
+          Weather: ${entry.temp}°F ${entry.weather}<br>
+          Thoughts: ${entry.thoughts}
+        `;
+        entriesDiv.appendChild(card);
+      });
+    }
   </script>
 </body>
 </html>
