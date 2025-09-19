@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>⚙️ Settings</h1>
+
+  <h3>Choose a Theme</h3>
+  <button onclick="setTheme('default')">Default</button>
+  <button onclick="setTheme('dark')">Dark Mode</button>
+  <button onclick="setTheme('garnetGold')">Garnet & Gold</button>
+  <button onclick="setTheme('purple')">Purple</button>
+
+  <!-- Bottom nav -->
+  <div class="navbar">
+    <a href="index.html">🏠 Home</a>
+    <a href="journal.html">📖 Journal</a>
+    <a href="settings.html" class="active">⚙️ Settings</a>
+  </div>
+
+  <script>
+    // Apply saved theme on load
+    window.onload = function() {
+      let theme = localStorage.getItem("theme") || "default";
+      applyTheme(theme);
+    };
+
+    function setTheme(theme) {
+      localStorage.setItem("theme", theme);
+      applyTheme(theme);
+    }
+
+    function applyTheme(theme) {
+      let body = document.body;
+
+      if (theme === "default") {
+        body.style.backgroundColor = "#425af5";
+        body.style.color = "#ffffff";
+      } else if (theme === "dark") {
+        body.style.backgroundColor = "#000000";
+        body.style.color = "#ffffff";
+      } else if (theme === "garnetGold") {
+        body.style.backgroundColor = "#782F40";
+        body.style.color = "#CEB888";
+      } else if (theme === "purple") {
+        body.style.backgroundColor = "#440b5c";
+        body.style.color = "#000000";
+      }
+    }
+  </script>
+</body>
+</html>
